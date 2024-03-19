@@ -1,27 +1,167 @@
-<h1>NutriApp🍉</h1>
-<input
-  type="text"
-  [(ngModel)]="searchInputValue"
-  placeholder="Digite um Alimento"
-  (keyup.enter)="getData()"
-/>
-<button (click)="getData()">Buscar</button>
-<div class="loading-spinner" *ngIf="isLoading"></div>
-<div *ngIf="searchedFood.length > 0">
-  <h3>Resultados:</h3>
-  <ul *ngFor="let food of searchedFood">
-    <li>
-      <button (click)="addToDailyMeal(food)">+</button
-      ><strong>{{ capitalizeFirstLetter(food.name) }}</strong
-      >:
+<div class="w-full h-[100vh] grid gap-4 grid-cols-2">
+  <div class="flex flex-col bg-blue-300">
+    <div class="flex items-center justify-center gap-6 mt-4">
+      <h1 class="text-6xl font-bold text-white">NutriApp</h1>
+      <img
+        class="w-[100px]"
+        src="../assets/watermelon-svgrepo-com.svg"
+        alt=""
+      />
+    </div>
+    <div class="w-full flex justify-center mt-4">
+      <input
+        class="py-3 px-6 w-3/6 outline-none rounded-l-xl"
+        type="text"
+        [(ngModel)]="searchInputValue"
+        placeholder="Digite um Alimento"
+        (keyup.enter)="getData()"
+      />
+      <button
+        class="text-white font-bold py-3 px-4 bg-blue-500 w-1/6 rounded-r-xl"
+        (click)="getData()"
+      >
+        Buscar
+      </button>
+    </div>
+    <div class="loading-spinner m-auto" *ngIf="isLoading"></div>
+    <div>
+      <div
+        class="bg-white w-5/6 mx-auto p-4 mt-4 rounded-xl shadow-lg"
+        *ngIf="searchedFood.length > 0"
+      >
+        <div *ngFor="let food of searchedFood">
+          <div>
+            <div
+              class="flex justify-between items-center border-b-2 border-blue-200 mx-auto"
+            >
+              <h2 class="text-4xl text-blue-500 font-bold">
+                {{ capitalizeFirstLetter(food.name) }}
+              </h2>
+              <span class="text-2xl font-semibold"
+                >{{ food.serving_size_g }} g</span
+              >
+              <h3 class="text-2xl text-blue-500 font-bold">
+                {{ food.calories }} cal
+              </h3>
+            </div>
+            <div class="mt-4">
+              <div class="flex justify-around gap-4 items-center">
+                <div
+                  class="flex flex-col justify-center items-center p-2 shadow-md"
+                >
+                  <p class="text-4xl font-semibold">{{ food.protein_g }}g</p>
+                  <span class="text-2xl text-blue-500">proteína</span>
+                </div>
+                <div
+                  class="flex flex-col justify-center items-center p-2 shadow-md"
+                >
+                  <p class="text-4xl font-semibold">
+                    {{ food.carbohydrates_total_g }}g
+                  </p>
+                  <span class="text-2xl text-blue-500">carboidratos</span>
+                </div>
+                <div
+                  class="flex flex-col justify-center items-center p-2 shadow-md"
+                >
+                  <p class="text-4xl font-semibold">{{ food.fat_total_g }}g</p>
+                  <span class="text-2xl text-blue-500">gordura</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center mt-4">
+              <button class="ml-4 flex gap-4 items-center">
+                <p class="text-blue-500">mais</p>
+                <img
+                  class="w-[16px]"
+                  src="../assets/down-arrow-backup-2-svgrepo-com.svg"
+                  alt=""
+                />
+              </button>
+              <button
+                class="p-2 bg-blue-500 text-4xl rounded-lg text-white"
+                (click)="addToDailyMeal(food)"
+              >
+                <img
+                  class="w-[30px] h-[30px]"
+                  src="../assets/plus-svgrepo-com.svg"
+                  alt=""
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div *ngIf="dailyMeal.length == 0">
+      <div class="flex justify-between flex-col p-4">
+        <h1 class="text-4xl font-bold text-blue-500">
+          Procure um Alimento e crie uma nova refeição!
+        </h1>
+        <img class="w-[400px] m-auto" src="../assets/watermelon.jpg" alt="" />
+      </div>
+    </div>
+    <div class="bg-blue-50 p-4 rounded-lg shadow-md">
+      <div>
+        <h3
+          class="font-bold text-blue-500 text-2xl border-b-2 w-5/6 border-blue-500"
+        >
+          Sua Refeição:
+        </h3>
+      </div>
+      <div class="flex gap-4 w-5/6 mt-2">
+        <input
+          class="p-2 w-3/6 outline-none rounded-l-xl"
+          type="text"
+          placeholder="Nomeie sua Refeição"
+          [(ngModel)]="mealName"
+        />
+        <button
+          class="text-white font-bold p-2 bg-blue-500 w-1/6 rounded-lg"
+          (click)="saveMeal()"
+        >
+          Salvar
+        </button>
+        <button
+          class="text-blue-500 border-2 w-1/6 font-bold border-blue-300 py-2 px-4 rounded-lg"
+          (click)="dailyMeal = []"
+        >
+          Limpar
+        </button>
+      </div>
+      <div class="w-5/6 flex justify-between items-center">
+        <p class="mt-2 text-500-blue font-bold">Cake</p>
+        <div class="flex gap-2 items-center">
+          <span class="">100g</span>
+          <button class="rounded-lg border-red-500">
+            <img
+              class="w-[20px]"
+              src="../assets/close-md-svgrepo-com.svg"
+              alt=""
+            />
+          </button>
+        </div>
+      </div>
+      <div *ngFor="let food of dailyMeal">
+        <div>
+          >{{ food.serving_size_g }}g
+          {{ capitalizeFirstLetter(food.name) }}
+        </div>
+      </div>
+      <h3>Nutrientes:</h3>
       <ul>
-        <li *ngFor="let key of getObjectKeys(food)">
-          {{ key }}: {{ food[key] }}
+        <li *ngFor="let key of getObjectKeys(dailyMealMacros())">
+          {{ key }}: {{ dailyMealMacros()[key] }}
+          <span>{{ key }} : {{ dailyMealMacros()[key] }}</span>
         </li>
       </ul>
-    </li>
-  </ul>
+    </div>
+  </div>
 </div>
+<footer class="header">
+  <p>NutriApp🍉 todos os direitos reservados.</p>
+</footer>
 
 <div *ngIf="dailyMeal.length > 0">
   <h3>Sua Refeição:</h3>
@@ -35,31 +175,6 @@
         >{{ food.serving_size_g }}g
         {{ capitalizeFirstLetter(food.name) }}</strong
       >
-    </li>
-  </ul>
-  <h3>Nutrientes:</h3>
-  <ul>
-    <li *ngFor="let key of getObjectKeys(dailyMealMacros())">
-      {{ key }}: {{ dailyMealMacros()[key] }}
-    </li>
-  </ul>
-</div>
-
-<div *ngIf="savedMeals.length > 0">
-  <h3>Refeições Salvas</h3>
-  <ul *ngFor="let meal of savedMeals">
-    <strong
-      ><h4>{{ meal.name }}</h4></strong
-    >
-    <li *ngFor="let food of meal.foods">
-      <strong
-        >{{ food.serving_size_g }}g
-        {{ capitalizeFirstLetter(food.name) }}</strong
-      >
-    </li>
-    <strong><h4>Nutrientes</h4></strong>
-    <li *ngFor="let key of getObjectKeys(meal.macros)">
-      {{ key }}: {{ meal.macros[key] }}
     </li>
   </ul>
 </div>

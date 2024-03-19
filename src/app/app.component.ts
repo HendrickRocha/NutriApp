@@ -74,4 +74,8 @@ export class AppComponent {
       macros: this.dailyMealMacros(),
     });
   }
+
+  showMore() {
+    console.log('oi')
+  }
 }
