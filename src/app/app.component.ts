@@ -1,18 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from './services';
 import { firstValueFrom } from 'rxjs';
 import { Food, SavedMeal } from './interfaces';
+import { style, transition, trigger, animate } from '@angular/animations';
+
+const enterTransition = transition(':enter', [
+  style({
+    position: 'absolute',
+    top: -10,
+    opacity: 0,
+  }),
+  animate('0.5s ease-in', style({ top: 0, opacity: 1 })),
+]);
+const rotateTransition = transition('open => closed', [
+  style({}),
+  animate('0.5s ease-in', style({ transform: 'rotate(180deg)' })),
+]);
+
+const dropText = trigger('dropText', [enterTransition]);
+const rotate = trigger('rotate', [rotateTransition]);
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  animations: [dropText, rotate],
 })
 export class AppComponent {
   title = 'NutriApp';
   searchInputValue: string = '';
   mealName: string = '';
-  
+
   searchedFood: Food[] = [];
   dailyMeal: Food[] = [];
   savedMeals: SavedMeal[] = [];
@@ -21,6 +39,13 @@ export class AppComponent {
   isLoading: boolean = false;
 
   constructor(private apiService: ApiService) {}
+
+  maisBtn: boolean = false;
+  ngOnInit() {}
+
+  toggleTag() {
+    this.maisBtn = !this.maisBtn;
+  }
 
   async getData() {
     this.isLoading = true;
@@ -76,6 +101,6 @@ export class AppComponent {
   }
 
   showMore() {
-    console.log('oi')
+    console.log('oi');
   }
 }
