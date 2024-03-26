@@ -74,13 +74,13 @@
             >
               <div @dropText>
                 <span class="text-xl font-bold text-blue-500">
-                  Sódio : {{ food.sodium_mg }} g
+                  Sódio: {{ food.sodium_mg }} g |
                 </span>
                 <span class="text-xl font-bold text-blue-500">
-                  Açúcares : {{ food.sugar_g }} g
+                  Açúcares: {{ food.sugar_g }} g |
                 </span>
                 <span class="text-xl font-bold text-blue-500">
-                  Fibra : {{ food.fiber_g }} g
+                  Fibra: {{ food.fiber_g }} g
                 </span>
               </div>
             </div>
@@ -159,44 +159,59 @@
           Limpar
         </button>
       </div>
-      <div
-        *ngFor="let food of dailyMeal"
-        class="w-5/6 flex justify-between items-center"
-      >
-        <p class="mt-2 text-500-blue font-bold">
-          {{ capitalizeFirstLetter(food.name) }}
-        </p>
-        <div class="flex gap-2 items-center">
-          <span class="">{{ food.serving_size_g }}g</span>
-          <button
-            (click)="removeFromDailyMeal(food.name)"
-            class="rounded-lg border-red-500"
-          >
-            <img
-              class="w-[20px]"
-              src="../assets/close-md-svgrepo-com.svg"
-              alt=""
-            />
-          </button>
-        </div>
-      </div>
-      <h3 class="font-bold text-blue-500 text-2xl">Nutrientes:</h3>
-      <div class="flex flex-col">
-        <div class="flex w-5/6 text-xl border-b-2 border-blue-500">
-          <span class="font-bold text-blue-500">Calorias Totais: 393.6</span>
-        </div>
-        <div class="flex w-4/6 justify-around">
-          <div class="p-2 text-xl">
-            <span>3g <span class="text-blue-500 font-bold">P</span></span>
+      <div *ngFor="let food of dailyMeal">
+          <div>
+            <div
+              class="flex justify-between items-center border-b-2 border-blue-200 mx-auto"
+            >
+              <h2 class="text-4xl text-blue-500 font-bold">
+                {{ capitalizeFirstLetter(food.name) }}
+              </h2>
+              <span class="text-2xl font-semibold"
+                >{{ food.serving_size_g }} g</span
+              >
+              <h3 class="text-2xl text-blue-500 font-bold">
+                {{ food.calories }} cal
+              </h3>
+            </div>
+            <div class="mt-4">
+              <div class="flex justify-around gap-4 items-center mb-4">
+                <div
+                  class="flex flex-col justify-center items-center p-2 shadow-md"
+                >
+                  <p class="text-4xl font-semibold">{{ food.protein_g }}g</p>
+                  <span class="text-2xl text-blue-500">proteína</span>
+                </div>
+                <div
+                  class="flex flex-col justify-center items-center p-2 shadow-md"
+                >
+                  <p class="text-4xl font-semibold">
+                    {{ food.carbohydrates_total_g }}g
+                  </p>
+                  <span class="text-2xl text-blue-500">carboidratos</span>
+                </div>
+                <div
+                  class="flex flex-col justify-center items-center p-2 shadow-md"
+                >
+                  <p class="text-4xl font-semibold">{{ food.fat_total_g }}g</p>
+                  <span class="text-2xl text-blue-500">gordura</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <button
+                class="p-2 bg-red-200 text-4xl rounded-lg text-white"
+                (click)="removeFromDailyMeal(food.name)"
+              >
+                <img
+                  class="w-[30px] h-[30px]"
+                  src="../assets/close-md-svgrepo-com.svg"
+                  alt=""
+                />
+              </button>
+            </div>
           </div>
-          <div class="p-2 text-xl">
-            <span>57.2g <span class="text-blue-500 font-bold">C</span></span>
-          </div>
-          <div class="p-2 text-xl">
-            <span>17.6g <span class="text-blue-500 font-bold">G</span></span>
-          </div>
         </div>
-      </div>
     </div>
   </div>
 </div>
@@ -214,17 +229,39 @@
     >
       <div class="flex justify-between">
         <p class="text-blue-500 font-bold text-xl border-b-2 border-blue-500">
-          {{ saved.name }}
+          {{ capitalizeFirstLetter(saved.name) }}
         </p>
-
-        <img class="max-w-[20px]" src="../assets/plus-svgrepo-com.svg" alt="" />
       </div>
       <div *ngFor="let food of saved.foods">
-        <p class="font-bold">{{ food.calories }} calorias</p>
+        {{capitalizeFirstLetter(food.name)}}  {{food.serving_size_g}} g
+      </div>
+      <div>
+        <p class="text-blue-500 font-bold text-xl border-b-2 border-blue-500">
+          Nutrientes
+        </p>
+        <p>
+          Calorias: {{saved.macros.calories}} 
+        </p>
+        <p>
+          Proteína: {{saved.macros.protein_g}}g 
+        </p>
+        <p>
+          Carboidratos: {{saved.macros.carbohydrates_total_g}}g 
+        </p>
+        <p>
+          Gordura: {{saved.macros.fat_total_g}}g 
+        </p>
+        <p>
+          Sódio: {{saved.macros.sodium_mg}}mg 
+        </p>
+        <p>
+          Açúcares: {{saved.macros.sugar_g}}g
+        </p>
+        <p>
+          Fibra: {{saved.macros.fiber_g}}g
+        </p>
       </div>
     </div>
   </div>
 </div>
-<footer class="header">
-  <p>NutriApp🍉 todos os direitos reservados.</p>
-</footer>
+

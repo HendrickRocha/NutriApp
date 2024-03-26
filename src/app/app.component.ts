@@ -93,6 +93,11 @@ export class AppComponent {
   }
 
   saveMeal() {
+
+    if(this.mealName == ""){
+      return
+    }
+
     this.savedMeals.push({
       name: this.mealName,
       foods: this.dailyMeal,
@@ -100,7 +105,4 @@ export class AppComponent {
     });
   }
 
-  showMore() {
-    console.log('oi');
-  }
 }
