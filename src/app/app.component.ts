@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from './services';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, isEmpty } from 'rxjs';
 import { Food, SavedMeal } from './interfaces';
 import { style, transition, trigger, animate } from '@angular/animations';
 
@@ -35,6 +35,9 @@ export class AppComponent {
   dailyMeal: Food[] = [];
   savedMeals: SavedMeal[] = [];
 
+  notFound: boolean = false;
+  emptyField: boolean = false;
+
   toggleInput: Boolean = false;
   isLoading: boolean = false;
 
@@ -54,6 +57,8 @@ export class AppComponent {
         this.apiService.fetchData(this.searchInputValue)
       );
       this.searchedFood = response;
+
+      this.searchedFood.length < 1 ? this.notFound = true : this.notFound = false
     } catch (err) {
       console.log(err);
     } finally {
@@ -93,8 +98,8 @@ export class AppComponent {
   }
 
   saveMeal() {
-
     if(this.mealName == ""){
+      this.emptyField = true;
       return
     }
 
@@ -103,6 +108,8 @@ export class AppComponent {
       foods: this.dailyMeal,
       macros: this.dailyMealMacros(),
     });
+
+    this.emptyField = false;
   }
 
 }

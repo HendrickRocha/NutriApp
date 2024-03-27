@@ -2,76 +2,61 @@
   <div class="flex flex-col bg-blue-300">
     <div class="flex items-center justify-center gap-6 mt-4">
       <h1 class="text-6xl font-bold text-white">NutriApp</h1>
-      <img
-        class="w-[100px]"
-        src="../assets/watermelon-svgrepo-com.svg"
-        alt=""
-      />
+      <img class="w-[100px]" src="../assets/watermelon-svgrepo-com.svg" alt="" />
     </div>
     <div class="w-full flex justify-center mt-4">
-      <input
-        class="py-3 px-6 w-3/6 outline-none rounded-l-xl"
-        type="text"
-        [(ngModel)]="searchInputValue"
-        placeholder="Digite um Alimento"
-        (keyup.enter)="getData()"
-      />
-      <button
-        class="text-white font-bold py-3 px-4 bg-blue-500 w-1/6 rounded-r-xl"
-        (click)="getData()"
-      >
+      <input class="py-3 px-6 w-3/6 outline-none rounded-l-xl" type="text" [(ngModel)]="searchInputValue"
+        placeholder="Digite um Alimento" (keyup.enter)="getData()" />
+      <button class="text-white font-bold py-3 px-4 bg-blue-500 w-1/6 rounded-r-xl" (click)="getData()">
         Buscar
       </button>
     </div>
     <div class="loading-spinner m-auto" *ngIf="isLoading"></div>
+    <div *ngIf="notFound && !isLoading">
+      <div class="w-5/6 flex shadow-md bg-blue-100 rounded-xl mx-auto p-4 mt-8">
+        <div class="flex flex-col items-center gap-4 justify-center">
+          <p class="text-2xl font-bold text-blue-500">Não encontramos sua pesquisa...</p>
+          <p class="text-8xl font-bold text-red-500">
+            404 error
+          </p>
+        </div>
+        <div class="">
+          <img class="w-[300px] " src="../assets/sad.png" alt="">
+        </div>
+      </div>
+    </div>
     <div>
-      <div
-        class="bg-white w-5/6 mx-auto p-4 mt-4 rounded-xl shadow-lg"
-        *ngIf="searchedFood.length > 0"
-      >
+      <div class="bg-white w-5/6 mx-auto p-4 mt-4 rounded-xl shadow-lg" *ngIf="searchedFood.length > 0 && !isLoading">
         <div *ngFor="let food of searchedFood">
           <div>
-            <div
-              class="flex justify-between items-center border-b-2 border-blue-200 mx-auto"
-            >
+            <div class="flex justify-between items-center border-b-2 border-blue-200 mx-auto">
               <h2 class="text-4xl text-blue-500 font-bold">
                 {{ capitalizeFirstLetter(food.name) }}
               </h2>
-              <span class="text-2xl font-semibold"
-                >{{ food.serving_size_g }} g</span
-              >
+              <span class="text-2xl font-semibold">{{ food.serving_size_g }} g</span>
               <h3 class="text-2xl text-blue-500 font-bold">
                 {{ food.calories }} cal
               </h3>
             </div>
             <div class="mt-4">
               <div class="flex justify-around gap-4 items-center mb-4">
-                <div
-                  class="flex flex-col justify-center items-center p-2 shadow-md"
-                >
+                <div class="flex flex-col justify-center items-center p-2 shadow-md">
                   <p class="text-4xl font-semibold">{{ food.protein_g }}g</p>
                   <span class="text-2xl text-blue-500">proteína</span>
                 </div>
-                <div
-                  class="flex flex-col justify-center items-center p-2 shadow-md"
-                >
+                <div class="flex flex-col justify-center items-center p-2 shadow-md">
                   <p class="text-4xl font-semibold">
                     {{ food.carbohydrates_total_g }}g
                   </p>
                   <span class="text-2xl text-blue-500">carboidratos</span>
                 </div>
-                <div
-                  class="flex flex-col justify-center items-center p-2 shadow-md"
-                >
+                <div class="flex flex-col justify-center items-center p-2 shadow-md">
                   <p class="text-4xl font-semibold">{{ food.fat_total_g }}g</p>
                   <span class="text-2xl text-blue-500">gordura</span>
                 </div>
               </div>
             </div>
-            <div
-              *ngIf="maisBtn"
-              class="flex w-5/6 mx-auto justify-around py-4 relative"
-            >
+            <div *ngIf="maisBtn" class="flex w-5/6 mx-auto justify-around py-4 relative">
               <div @dropText>
                 <span class="text-xl font-bold text-blue-500">
                   Sódio: {{ food.sodium_mg }} g |
@@ -85,33 +70,14 @@
               </div>
             </div>
             <div class="flex justify-between items-center">
-              <button
-                (click)="toggleTag()"
-                class="ml-4 flex gap-4 items-center"
-              >
+              <button (click)="toggleTag()" class="ml-4 flex gap-4 items-center">
                 <p class="text-blue-500">{{ maisBtn ? "menos" : "mais" }}</p>
-                <img
-                  *ngIf="!maisBtn"
-                  class="w-[16px]"
-                  src="../assets/down-arrow-backup-2-svgrepo-com.svg"
-                  alt=""
-                />
-                <img
-                  *ngIf="maisBtn"
-                  class="w-[16px] rotate-180"
-                  src="../assets/down-arrow-backup-2-svgrepo-com.svg"
-                  alt=""
-                />
+                <img *ngIf="!maisBtn" class="w-[16px]" src="../assets/down-arrow-backup-2-svgrepo-com.svg" alt="" />
+                <img *ngIf="maisBtn" class="w-[16px] rotate-180" src="../assets/down-arrow-backup-2-svgrepo-com.svg"
+                  alt="" />
               </button>
-              <button
-                class="p-2 bg-blue-500 text-4xl rounded-lg text-white"
-                (click)="addToDailyMeal(food)"
-              >
-                <img
-                  class="w-[30px] h-[30px]"
-                  src="../assets/plus-svgrepo-com.svg"
-                  alt=""
-                />
+              <button class="p-2 bg-blue-500 text-4xl rounded-lg text-white" (click)="addToDailyMeal(food)">
+                <img class="w-[30px] h-[30px]" src="../assets/plus-svgrepo-com.svg" alt="" />
               </button>
             </div>
           </div>
@@ -128,131 +94,95 @@
         <img class="w-[400px] m-auto" src="../assets/watermelon.jpg" alt="" />
       </div>
     </div>
-    <div
-      *ngIf="dailyMeal.length > 0"
-      class="bg-blue-50 p-4 rounded-lg shadow-md"
-    >
+    <div *ngIf="dailyMeal.length > 0" class="bg-blue-50 p-4 rounded-lg shadow-md">
       <div>
-        <h3
-          class="font-bold text-blue-500 text-2xl border-b-2 w-5/6 border-blue-500"
-        >
+        <h3 class="font-bold text-blue-500 text-2xl border-b-2 w-5/6 border-blue-500">
           Sua Refeição:
         </h3>
       </div>
       <div class="flex gap-4 w-5/6 mt-2">
-        <input
-          class="p-2 w-3/6 outline-none rounded-l-xl"
-          type="text"
-          placeholder="Nomeie sua Refeição"
-          [(ngModel)]="mealName"
-        />
-        <button
-          class="text-white font-bold p-2 bg-blue-500 w-1/6 rounded-lg"
-          (click)="saveMeal()"
-        >
+        <input class="p-2 w-3/6 outline-none rounded-xl" type="text" placeholder="{{!emptyField ? 'Nomeie sua Refeição' : 'Nomeie sua Refeição'}}"
+          [(ngModel)]="mealName" [ngClass]="{'border-2 border-red-500 placeholder:text-red-500' : emptyField}"/>
+        <button class="text-white font-bold p-2 bg-blue-500 w-1/6 rounded-lg" (click)="saveMeal()">
           Salvar
         </button>
-        <button
-          class="text-blue-500 border-2 w-1/6 font-bold border-blue-300 py-2 px-4 rounded-lg"
-          (click)="dailyMeal = []"
-        >
+        <button class="text-blue-500 border-2 w-1/6 font-bold border-blue-300 py-2 px-4 rounded-lg"
+          (click)="dailyMeal = []">
           Limpar
         </button>
       </div>
       <div *ngFor="let food of dailyMeal">
-          <div>
-            <div
-              class="flex justify-between items-center border-b-2 border-blue-200 mx-auto"
-            >
-              <h2 class="text-4xl text-blue-500 font-bold">
-                {{ capitalizeFirstLetter(food.name) }}
-              </h2>
-              <span class="text-2xl font-semibold"
-                >{{ food.serving_size_g }} g</span
-              >
-              <h3 class="text-2xl text-blue-500 font-bold">
-                {{ food.calories }} cal
-              </h3>
-            </div>
-            <div class="mt-4">
-              <div class="flex justify-around gap-4 items-center mb-4">
-                <div
-                  class="flex flex-col justify-center items-center p-2 shadow-md"
-                >
-                  <p class="text-4xl font-semibold">{{ food.protein_g }}g</p>
-                  <span class="text-2xl text-blue-500">proteína</span>
-                </div>
-                <div
-                  class="flex flex-col justify-center items-center p-2 shadow-md"
-                >
-                  <p class="text-4xl font-semibold">
-                    {{ food.carbohydrates_total_g }}g
-                  </p>
-                  <span class="text-2xl text-blue-500">carboidratos</span>
-                </div>
-                <div
-                  class="flex flex-col justify-center items-center p-2 shadow-md"
-                >
-                  <p class="text-4xl font-semibold">{{ food.fat_total_g }}g</p>
-                  <span class="text-2xl text-blue-500">gordura</span>
-                </div>
+        <div>
+          <div class="flex justify-between items-center border-b-2 border-blue-200 mx-auto">
+            <h2 class="text-4xl text-blue-500 font-bold">
+              {{ capitalizeFirstLetter(food.name) }}
+            </h2>
+            <span class="text-2xl font-semibold">{{ food.serving_size_g }} g</span>
+            <h3 class="text-2xl text-blue-500 font-bold">
+              {{ food.calories }} cal
+            </h3>
+          </div>
+          <div class="mt-4">
+            <div class="flex justify-around gap-4 items-center mb-4">
+              <div class="flex flex-col justify-center items-center p-2 shadow-md">
+                <p class="text-4xl font-semibold">{{ food.protein_g }}g</p>
+                <span class="text-2xl text-blue-500">proteína</span>
+              </div>
+              <div class="flex flex-col justify-center items-center p-2 shadow-md">
+                <p class="text-4xl font-semibold">
+                  {{ food.carbohydrates_total_g }}g
+                </p>
+                <span class="text-2xl text-blue-500">carboidratos</span>
+              </div>
+              <div class="flex flex-col justify-center items-center p-2 shadow-md">
+                <p class="text-4xl font-semibold">{{ food.fat_total_g }}g</p>
+                <span class="text-2xl text-blue-500">gordura</span>
               </div>
             </div>
-            <div class="flex justify-between items-center">
-              <button
-                class="p-2 bg-red-200 text-4xl rounded-lg text-white"
-                (click)="removeFromDailyMeal(food.name)"
-              >
-                <img
-                  class="w-[30px] h-[30px]"
-                  src="../assets/close-md-svgrepo-com.svg"
-                  alt=""
-                />
-              </button>
-            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <button class="p-2 bg-red-200 text-4xl rounded-lg text-white" (click)="removeFromDailyMeal(food.name)">
+              <img class="w-[30px] h-[30px]" src="../assets/close-md-svgrepo-com.svg" alt="" />
+            </button>
           </div>
         </div>
+      </div>
     </div>
   </div>
 </div>
 
-<h1
-  *ngIf="savedMeals.length > 0"
-  class="bg-blue-100 text-2xl font-bold text-blue-500 p-2"
->
+<h1 *ngIf="savedMeals.length > 0" class="bg-blue-100 text-2xl font-bold text-blue-500 p-2">
   Refeições Salvas :
 </h1>
 <div class="bg-blue-100 py-4 flex mb-4" *ngIf="savedMeals.length > 0">
   <div class="" *ngFor="let saved of savedMeals">
-    <div
-      class="flex flex-col bg-blue-300 p-4 mx-2 shadow-lg rounded-xl max-w-[200px]"
-    >
+    <div class="flex flex-col bg-blue-300 p-4 mx-2 shadow-lg rounded-xl max-w-[200px]">
       <div class="flex justify-between">
         <p class="text-blue-500 font-bold text-xl border-b-2 border-blue-500">
           {{ capitalizeFirstLetter(saved.name) }}
         </p>
       </div>
       <div *ngFor="let food of saved.foods">
-        {{capitalizeFirstLetter(food.name)}}  {{food.serving_size_g}} g
+        {{capitalizeFirstLetter(food.name)}} {{food.serving_size_g}} g
       </div>
       <div>
         <p class="text-blue-500 font-bold text-xl border-b-2 border-blue-500">
           Nutrientes
         </p>
         <p>
-          Calorias: {{saved.macros.calories}} 
+          Calorias: {{saved.macros.calories}}
         </p>
         <p>
-          Proteína: {{saved.macros.protein_g}}g 
+          Proteína: {{saved.macros.protein_g}}g
         </p>
         <p>
-          Carboidratos: {{saved.macros.carbohydrates_total_g}}g 
+          Carboidratos: {{saved.macros.carbohydrates_total_g}}g
         </p>
         <p>
-          Gordura: {{saved.macros.fat_total_g}}g 
+          Gordura: {{saved.macros.fat_total_g}}g
         </p>
         <p>
-          Sódio: {{saved.macros.sodium_mg}}mg 
+          Sódio: {{saved.macros.sodium_mg}}mg
         </p>
         <p>
           Açúcares: {{saved.macros.sugar_g}}g
@@ -264,4 +194,3 @@
     </div>
   </div>
 </div>
-
